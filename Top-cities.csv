@@ -1,0 +1,51 @@
+,City Name,State,Location,County, Caseload
+1, Wailea, Hawaii,"20.6899733, -156.4392245",Hawaii County,11032
+2, Cambria, California,"35.5641381, -121.08074",San Luis Obispo County,30291
+3, Springdale, Utah," 37.188931, -112.998588",Washington County,28923
+4, Quebec City, Quebec,"46.814255,  -71.210034",Quebec/Province,424802
+5, Ashland, Oregon,"42.194361,  -122.709393",Jackson County,23433
+6, Calgary, Alberta," 51.044827, -114.071519",Alberta/Province,119506
+7, Victoria, British Columbia,"48.43333, -123.35",British Columbia/Province,204914
+8, Sedona, Arizona,"34.869691, -111.760978",Yavapai County,28335
+9, Cambridge, Massachusetts,"42.374911, -71.110046",Middlesex County,159612
+10, Minneapolis, Minnesota,"44.977479, -93.264358",Hennepin County,156327
+11, Paso Robles, California,"35.640191, -120.658098",San Luis Obispo County,30291
+12, Solvang, California,"34.595969, -120.137922",Santa Barbara County,45650
+13, Bar Harbor, Maine,"44.387552, -68.204295",Hancock County,2851
+14, Key West, Florida,"24.555057, -81.780036",Monroe County,10520
+15, Sanibel, Florida,"26.450705, -82.024168",Lee County,124961
+16, Pittsburgh, Pennsylvania,"40.440763, -79.99589",Allegheny County,131892
+17, Washington, D.C.,"38.907045, -77.036735",District of Columbia,64240
+18, Charleston, South Carolina,"32.776473, -79.931048",Charleston County,65233
+19, Rosemont, Illinois,"41.986686, -87.870528",Cook County,641268
+20, Montreal, Quebec,"45.5016889, -73.567256",Quebec/Province,426457
+21, Durango, Colorado,"37.27555, -107.879996",La Plata County,5922
+22, Vancouver, British Columbia,"49.2827291, -123.1207375",British Columbia/Province,204914
+23, Kihei, Hawaii,"20.784956, -156.464061",Maui County,9898
+24, Lahaina, Hawaii,"20.878995, -156.682963",Maui County,9898
+25, Lihue, Hawaii,"21.981178, -159.367621",Kauai County,2614
+26, Chicago, Illinois,"41.878156, -87.629309",Cook County,641268
+27, Asheville, North Carolina,"35.595009, -82.55176",Buncombe County,28191
+28, Moab, Utah,"38.573294, -109.550776",Grand County,1427
+29, Seattle, Washington,"47.606098, -122.332914",King County,164221
+30, Chandler, Arizona,"33.306224, -111.841478",Maricopa County,737103
+31, Boston, Massachusetts,"42.359135, -71.059846",Suffolk County,107738
+32, Cleveland, Ohio,"41.499223, -81.694487",Cuyahoga County,148161
+33, New Orleans, Louisiana,"29.950793, -90.075713",Orleans Parish County,46796
+34, Treasure Island, Florida,"27.769063, -82.769246",Pinellas County,134378
+35, Park City, Utah,"40.6460622, -111.4979729",Summit County,6808
+36, Fargo, North Dakota,"46.87694, -96.789875",Cass County,32212
+37, Henderson, Nevada,"36.039588, -114.982017",Clark County,339255
+38, Garden Grove, California,"33.774174, -117.937981",Orange County,326246
+39, Scottsdale, Arizona,"33.494978, -111.926127",Maricopa County,737103
+40, Estes Park, Colorado,"40.376647, -105.521561",Larimer County,39807
+41, Santa Fe, New Mexico,"35.686945, -105.938067",Santa Fe County,13456
+42, Arlington, Virginia,"38.879884, -77.107548",Hopewell City,3691
+43, Laguna Beach, California,"33.542734, -117.785349",Orange County,326246
+44, Newport, Rhode Island,"41.489645, -71.312669",Newport County,8809
+45, Palm Desert, California,"33.721258, -116.373749",Riverside County,374712
+46, Avalon, California,"33.3428995, -118.3287135",Los Angeles County,1491402
+47, Bozeman, Montana,"45.689288, -111.038747",Gallatin County,20680
+48, La Jolla, California,"32.8328112, -117.2712717",San Diego County,391534
+49, Portland, Maine,"43.65835, -70.25791",Cumberland County,22078
+50, Biloxi, Mississippi,"30.392821, -88.885602",Harrison County,34446

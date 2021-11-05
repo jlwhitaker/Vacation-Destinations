@@ -364,6 +364,10 @@ for (var i = 0; i < cities.length; i++) {
   );
 }
 
+var stations = []
+
+
+var stationMarkers = 
 
 
 // Add all the cityMarkers to a new layer group.
