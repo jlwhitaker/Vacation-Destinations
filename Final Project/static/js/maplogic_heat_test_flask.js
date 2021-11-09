@@ -1,3 +1,32 @@
+// Create a map object.
+var myMap = L.map("map", {
+  center: [37.09, -95.71],
+  zoom: 4
+});
+
+// Define variables for our tile layers.
+var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+})
+
+var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+//Pulling in GoogleStreets -->
+googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+  maxZoom: 20,
+  subdomains:['mt0','mt1','mt2','mt3']
+});
+
+
+//Trying to add a scale to the map(it worked)
+L.control.scale({
+  metric: true,
+  imperial: false,
+  position: 'bottomright'
+}).addTo(myMap)
+
 // An array of cities and their locations
 var cities =[
     {
@@ -351,6 +380,90 @@ var cities =[
       caseload: 34446
     }
   ];
+//Define a markerSize() function that will give each city a different radius based on its population.
+function markerSize(caseload) {
+  return Math.sqrt(caseload) * 50;
+  }
+// Loop through the cities array, and create one marker for each city object.
+for (var i = 0; i < cities.length; i++) {
+  // Conditionals for country caseloads
+var color = "";
+if (cities[i].caseload > 600000) {
+  color = "#BD0026";
+}
+else if (cities[i].caseload > 400000) {
+  color = "#E31A1C";
+}
+else if (cities[i].caseload > 200000) {
+  color = "#FC4E2A";
+}
+else if (cities[i].caseload > 100000) {
+  color = "#FD8D3C";
+}
+else if (cities[i].caseload > 50000) {
+  color = "#FEB24C";
+}
+else if (cities[i].caseload > 10000) {
+  color = "#FED976";
+}
+else if (cities[i].caseload > 1500) {
+  color = "#FFEDA0";
+}
+else {
+  color = "#ccc";
+}
+  
+  L.circle(cities[i].location, {
+    fillOpacity: 0.55,
+    color: color,
+    
+    // Setting our circle's radius to equal the output of our markerSize() function:
+    // This will make our marker's size proportionate to its caseload.
+    radius: markerSize(cities[i].caseload)
+  }).bindPopup(`<h1>${cities[i].name}</h1> <hr> <h3>Caseload: ${cities[i].caseload.toLocaleString()}</h3>`).addTo(myMap);
+}
+
+// Define layer names
+const layers = [
+  '0-1500',
+  '1500-10000',
+  '10000-50000',
+  '50000-100000',
+  '100000-200000',
+  '200000-400000',
+  '400000-600000',
+  '600000+'
+  ];
+  const colors = [
+  '#FFEDA0',
+  '#FED976',
+  '#FEB24C',
+  '#FD8D3C',
+  '#FC4E2A',
+  '#E31A1C',
+  '#BD0026',
+  '#800026'
+  ];
+   
+  // Create legend
+  const legend = document.getElementById('legend');
+   
+  layers.forEach((layer, i) => {
+  const color = colors[i];
+  const item = document.createElement('div');
+  const key = document.createElement('span');
+  key.className = 'legend-key';
+  key.style.backgroundColor = color;
+   
+  const value = document.createElement('span');
+  value.innerHTML = `${layer}`;
+   item.appendChild(key);
+   item.appendChild(value);
+   legend.appendChild(item);
+   })
+
+   L.control.legend.addTo(myMap)
+
 
 //////////////////////////////////////////////////////////////////
  // An array that will store the created cityMarkers
@@ -445,55 +558,7 @@ d3.json("/api/climate-data").then(function(response) {
         monthLayers.push(layer)
     }
     console.log(monthLayers)
-    
-// for (var i = 0; i < stations.length; i++) {
-// //   janHeatArray.push([stations[i].Location["Lat"], stations[i].Location.Long, stations[i].Climate.Jan["Avg High"]]);
-// //   junHeatArray.push([stations[i].Location["Lat"], stations[i].Location.Long, stations[i].Climate.Jun["Avg High"]]);
-//     janHeatArray.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Jan["Avg High"]});
-//     junHeatArray.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Jun["Avg High"]});
-// };
 
-
-// var JanLayer = {
-//     "radius": 1,
-//     // scales the radius based on map zoom
-//     "maxOpacity": .8, 
-//     "scaleRadius": true, 
-//     // if set to false the heatmap uses the global maximum for colorization
-//     // if activated: uses the data maximum within the current map boundaries 
-//     //   (there will always be a red spot with useLocalExtremas true)
-//     "useLocalExtrema": false,
-//     gradient: {.45: "blue", .65: "lime", .80: "orange", .90: "red"},
-//     // which field name in your data represents the latitude - default "lat"
-//     latField: 'lat',
-//     // which field name in your data represents the longitude - default "lng"
-//     lngField: 'lng',
-//     // which field name in your data represents the data value - default "value"
-//     valueField: 'temp'
-// };
-
-// var JunLayer = {
-//     "radius": 1,
-//     "maxOpacity": .8, 
-//     // scales the radius based on map zoom
-//     "scaleRadius": true, 
-//     // if set to false the heatmap uses the global maximum for colorization
-//     // if activated: uses the data maximum within the current map boundaries 
-//     //   (there will always be a red spot with useLocalExtremas true)
-//     "useLocalExtrema": false,
-//     gradient: {.45: "blue", .65: "lime", .85: "orange", .90: "red"},
-//     // which field name in your data represents the latitude - default "lat"
-//     latField: 'lat',
-//     // which field name in your data represents the longitude - default "lng"
-//     lngField: 'lng',
-//     // which field name in your data represents the data value - default "value"
-//     valueField: 'temp'
-// };
-// var JanHeatmapLayer = new HeatmapOverlay(JanLayer) ;
-// JanHeatmapLayer.setData({min: 10, max: 110, data: janHeatArray});
-
-// var JunHeatmapLayer = new HeatmapOverlay(JunLayer) ;
-// JunHeatmapLayer.setData({min: 10, max: 110, data: junHeatArray});
 
 // function heatmapPop (LatLng) {
 //     if LatLng === (junHeatArray.lat,junHeatArray.lng){
@@ -503,18 +568,11 @@ d3.json("/api/climate-data").then(function(response) {
 //    }   };
 // JunHeatmapLayer.on('mouseover',heatmapPop (LatLng));
 
-// Define variables for our tile layers.
-var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-})
 
-var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-});
 
 // Only one base layer can be shown at a time.
 var baseMaps = {
-  Street: street,
+  Street: googleStreets,
   Topography: topo
 };
 
@@ -546,12 +604,7 @@ var myMap = L.map("map", {
 // Add the layer control to the map.
 L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 
-//Trying to add a scale to the map(it worked)
-L.control.scale({
-    metric: true,
-    imperial: false,
-    position: 'bottomright'
-}).addTo(myMap)
+
 
 });
 
