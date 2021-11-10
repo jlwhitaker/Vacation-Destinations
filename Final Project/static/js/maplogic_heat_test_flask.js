@@ -1,8 +1,4 @@
-// Create a map object.
-var myMap = L.map("map", {
-  center: [37.09, -95.71],
-  zoom: 4
-});
+
 
 // Define variables for our tile layers.
 var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -19,13 +15,13 @@ googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
   subdomains:['mt0','mt1','mt2','mt3']
 });
 
+// Only one base layer can be shown at a time.
+var baseMaps = {
+  Street: street,
+  Topography: topo
+};
 
-//Trying to add a scale to the map(it worked)
-L.control.scale({
-  metric: true,
-  imperial: false,
-  position: 'bottomright'
-}).addTo(myMap)
+
 
 // An array of cities and their locations
 var cities =[
@@ -380,93 +376,9 @@ var cities =[
       caseload: 34446
     }
   ];
-//Define a markerSize() function that will give each city a different radius based on its population.
-function markerSize(caseload) {
-  return Math.sqrt(caseload) * 50;
-  }
-// Loop through the cities array, and create one marker for each city object.
-for (var i = 0; i < cities.length; i++) {
-  // Conditionals for country caseloads
-var color = "";
-if (cities[i].caseload > 600000) {
-  color = "#BD0026";
-}
-else if (cities[i].caseload > 400000) {
-  color = "#E31A1C";
-}
-else if (cities[i].caseload > 200000) {
-  color = "#FC4E2A";
-}
-else if (cities[i].caseload > 100000) {
-  color = "#FD8D3C";
-}
-else if (cities[i].caseload > 50000) {
-  color = "#FEB24C";
-}
-else if (cities[i].caseload > 10000) {
-  color = "#FED976";
-}
-else if (cities[i].caseload > 1500) {
-  color = "#FFEDA0";
-}
-else {
-  color = "#ccc";
-}
-  
-  L.circle(cities[i].location, {
-    fillOpacity: 0.55,
-    color: color,
-    
-    // Setting our circle's radius to equal the output of our markerSize() function:
-    // This will make our marker's size proportionate to its caseload.
-    radius: markerSize(cities[i].caseload)
-  }).bindPopup(`<h1>${cities[i].name}</h1> <hr> <h3>Caseload: ${cities[i].caseload.toLocaleString()}</h3>`).addTo(myMap);
-}
+  //////////////////////////////////////////////////
 
-// Define layer names
-const layers = [
-  '0-1500',
-  '1500-10000',
-  '10000-50000',
-  '50000-100000',
-  '100000-200000',
-  '200000-400000',
-  '400000-600000',
-  '600000+'
-  ];
-  const colors = [
-  '#FFEDA0',
-  '#FED976',
-  '#FEB24C',
-  '#FD8D3C',
-  '#FC4E2A',
-  '#E31A1C',
-  '#BD0026',
-  '#800026'
-  ];
-   
-  // Create legend
-  const legend = document.getElementById('legend');
-   
-  layers.forEach((layer, i) => {
-  const color = colors[i];
-  const item = document.createElement('div');
-  const key = document.createElement('span');
-  key.className = 'legend-key';
-  key.style.backgroundColor = color;
-   
-  const value = document.createElement('span');
-  value.innerHTML = `${layer}`;
-   item.appendChild(key);
-   item.appendChild(value);
-   legend.appendChild(item);
-   })
-
-   L.control.legend.addTo(myMap)
-
-
-//////////////////////////////////////////////////////////////////
- // An array that will store the created cityMarkers
+   // An array that will store the created cityMarkers
 var cityMarkers = [];
 
 for (var i = 0; i < cities.length; i++) {
@@ -480,85 +392,177 @@ for (var i = 0; i < cities.length; i++) {
  // Now, we can handle them as one group instead of referencing each one individually.
 var cityLayer = L.layerGroup(cityMarkers);
 
+////////////////////////////////////////////////////////
+// Create a map object.
+
 ///////////////////////////////////////////////////////////////////////
+  // COIVD data
+
+// //Define a markerSize() function that will give each city a different radius based on its population.
+// function markerSize(caseload) {
+//   return Math.sqrt(caseload) * 50;
+//   }
+// // Loop through the cities array, and create one marker for each city object.
+// for (var i = 0; i < cities.length; i++) {
+//   // Conditionals for country caseloads
+// var color = "";
+// if (cities[i].caseload > 600000) {
+//   color = "#BD0026";
+// }
+// else if (cities[i].caseload > 400000) {
+//   color = "#E31A1C";
+// }
+// else if (cities[i].caseload > 200000) {
+//   color = "#FC4E2A";
+// }
+// else if (cities[i].caseload > 100000) {
+//   color = "#FD8D3C";
+// }
+// else if (cities[i].caseload > 50000) {
+//   color = "#FEB24C";
+// }
+// else if (cities[i].caseload > 10000) {
+//   color = "#FED976";
+// }
+// else if (cities[i].caseload > 1500) {
+//   color = "#FFEDA0";
+// }
+// else {
+//   color = "#ccc";
+// }
+  
+//   L.circle(cities[i].location, {
+//     fillOpacity: 0.55,
+//     color: color,
+    
+//     // Setting our circle's radius to equal the output of our markerSize() function:
+//     // This will make our marker's size proportionate to its caseload.
+//     radius: markerSize(cities[i].caseload)
+//   }).bindPopup(`<h1>${cities[i].name}</h1> <hr> <h3>Caseload: ${cities[i].caseload.toLocaleString()}</h3>`).addTo(myMap);
+// }
+
+// // Define layer names
+// const layers = [
+//   '0-1500',
+//   '1500-10000',
+//   '10000-50000',
+//   '50000-100000',
+//   '100000-200000',
+//   '200000-400000',
+//   '400000-600000',
+//   '600000+'
+//   ];
+//   const colors = [
+//   '#FFEDA0',
+//   '#FED976',
+//   '#FEB24C',
+//   '#FD8D3C',
+//   '#FC4E2A',
+//   '#E31A1C',
+//   '#BD0026',
+//   '#800026'
+//   ];
+   
+  // // Create legend
+  // const legend = document.getElementById('legend');
+   
+  // layers.forEach((layer, i) => {
+  // const color = colors[i];
+  // const item = document.createElement('div');
+  // const key = document.createElement('span');
+  // key.className = 'legend-key';
+  // key.style.backgroundColor = color;
+   
+  // const value = document.createElement('span');
+  // value.innerHTML = `${layer}`;
+  //  item.appendChild(key);
+  //  item.appendChild(value);
+  //  legend.appendChild(item);
+  //  })
+
+  //  L.control.legend.addTo(myMap)
+  
+
+//////////////////////////////////////////////////////////////////
+
 
 // load data for climate as stations
 
 d3.json("/api/climate-data").then(function(response) {
-    //load data into stations variable
-    var stations = []
-    for  (var i = 0; i < response.length; i++) {
-        stations.push(response[i]);
-    };
-    console.log(stations);
-    
-    //create variables to hold data for each month
-    var January = [];
-    var February = [];
-    var March = [];
-    var April = [];
-    var May = [];
-    var June = [];
-    var July = [];
-    var August = [];
-    var September = [];
-    var October = [];
-    var November = [];
-    var December = [];  
+  //load data into stations variable
+  var stations = []
+  for  (var i = 0; i < response.length; i++) {
+      stations.push(response[i]);
+  };
+  console.log(stations);
+  
+  //create variables to hold data for each month
+  var January = [];
+  var February = [];
+  var March = [];
+  var April = [];
+  var May = [];
+  var June = [];
+  var July = [];
+  var August = [];
+  var September = [];
+  var October = [];
+  var November = [];
+  var December = [];  
 
-    // pass data from stations into each month
-    for (var i = 0; i < stations.length; i++) {
-        January.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Jan["Avg High"]});
-        February.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Feb["Avg High"]});
-        March.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Mar["Avg High"]});
-        April.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Apr["Avg High"]});
-        May.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.May["Avg High"]});
-        June.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Jun["Avg High"]});
-        July.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Jul["Avg High"]});
-        //August.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Aug["Avg High"]});
-        September.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Sep["Avg High"]});
-        October.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Oct["Avg High"]});
-        November.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Nov["Avg High"]});
-        December.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Dec["Avg High"]});
-    };
-    //create an array holding all the months to loop through
-    var monthlyArrays = [January,February, March, April, May, June, July,August, September, October, November, December]
+  // pass data from stations into each month
+  for (var i = 0; i < stations.length; i++) {
+      January.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Jan["Avg High"]});
+      February.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Feb["Avg High"]});
+      March.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Mar["Avg High"]});
+      April.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Apr["Avg High"]});
+      May.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.May["Avg High"]});
+      June.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Jun["Avg High"]});
+      July.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Jul["Avg High"]});
+      //August.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Aug["Avg High"]});
+      September.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Sep["Avg High"]});
+      October.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Oct["Avg High"]});
+      November.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Nov["Avg High"]});
+      December.push({lat: stations[i].Location["Lat"], lng: stations[i].Location.Long, temp: stations[i].Climate.Dec["Avg High"]});
+  };
+  //create an array holding all the months to loop through
+  var monthlyArrays = [January,February, March, April, May, June, July,August, September, October, November, December]
 
-    //create new array for the final whole layer variables for each month
-    monthLayers= []
+  //create new array for the final whole layer variables for each month
+  monthLayers= []
 
-    //loop through the months to create the layers
-    for (var i = 0; i < monthlyArrays.length; i++) {
+  //loop through the months to create the layers
+  for (var i = 0; i < monthlyArrays.length; i++) {
 
-        var LayerBasis = {
-        "radius": 1,
-        // scales the radius based on map zoom
-        "minOpacity": .3,
-        "maxOpacity": .8, 
-        "scaleRadius": true, 
-      // if set to false the heatmap uses the global maximum for colorization
-      // if activated: uses the data maximum within the current map boundaries 
-      //   (there will always be a red spot with useLocalExtremas true)
-        useLocalExtrema: false,
-        gradient: {.45: "blue", .65: "lime", .80: "orange", .90: "red"},
-      // which field name in your data represents the latitude - default "lat"
-        latField: 'lat',
-      // which field name in your data represents the longitude - default "lng"
-        lngField: 'lng',
-      // which field name in your data represents the data value - default "value"
-        valueField: 'temp'
-        };
-        var Layername = [i].toString() + "-Layer";
+      var LayerBasis = {
+      "radius": 1,
+      // scales the radius based on map zoom
+      "minOpacity": .3,
+      "maxOpacity": .8, 
+      "scaleRadius": true, 
+    // if set to false the heatmap uses the global maximum for colorization
+    // if activated: uses the data maximum within the current map boundaries 
+    //   (there will always be a red spot with useLocalExtremas true)
+      useLocalExtrema: false,
+      gradient: {.45: "blue", .65: "lime", .80: "orange", .90: "red"},
+    // which field name in your data represents the latitude - default "lat"
+      latField: 'lat',
+    // which field name in your data represents the longitude - default "lng"
+      lngField: 'lng',
+    // which field name in your data represents the data value - default "value"
+      valueField: 'temp'
+      };
+      var Layername = [i].toString() + "-Layer";
 
-        //create layer & set data
-        var layer = new HeatmapOverlay(LayerBasis);
-        layer.setData({min: 10, max: 110, data: monthlyArrays[i]});
+      //create layer & set data
+      var layer = new HeatmapOverlay(LayerBasis);
+      layer.setData({min: 10, max: 110, data: monthlyArrays[i]});
 
-        //push layer to the array holding all final layers
-        monthLayers.push(layer)
-    }
-    console.log(monthLayers)
-
+      //push layer to the array holding all final layers
+      monthLayers.push(layer)
+  }
+  console.log(monthLayers);
+});
 
 // function heatmapPop (LatLng) {
 //     if LatLng === (junHeatArray.lat,junHeatArray.lng){
@@ -568,43 +572,84 @@ d3.json("/api/climate-data").then(function(response) {
 //    }   };
 // JunHeatmapLayer.on('mouseover',heatmapPop (LatLng));
 
+///////////////////////////////////////////////////////////////////////
+
+// load data for attractions 
+
+// d3.json("/api/attractions-data").then(function(response) {
+//   //load data into stations variable
+//   var attractions = []
+//   for  (var i = 0; i < response.length; i++) {
+//       attractions.push(response[i]);
+//   };
+//   console.log(attractions);
+
+//   //create custom inon
+//   var icon = L.Icon.extend({
+//     options: {
+//         iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
+//         shadowUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
+//         iconSize:     [20,20],
+//         shadowSize:   [10,10],
+//         iconAnchor:   [15,15],
+//         shadowAnchor: [15,15],
+//         popupAnchor:  [-5, -25],
+//     }
+//   });
+
+//   var attractionsIcon = new icon ({iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png"})
+
+//  // An array that will store the created cityMarkers
+//   var touristMarkers = [];
+
+//   for (var i = 0; i < attractions.length; i++) {
+//   // loop through the cities array, create a new marker, and push it to the cityMarkers array
+//    touristMarkers.push(
+//     L.marker([attractions[i].Lat,attractions[i].Lon], {icon: attractionsIcon}).bindPopup( attractions[i].Name));
+//   };
+//   var touristLayer = L.layerGroup(touristMarkers);
+// });
+// Add all the touristMarkers to a new layer group.
+// Now, we can handle them as one group instead of referencing each one individually.
 
 
-// Only one base layer can be shown at a time.
-var baseMaps = {
-  Street: googleStreets,
-  Topography: topo
-};
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 // Overlays that can be toggled on or off
 var overlayMaps = {
   Cities: cityLayer,
-  January: monthLayers[0],
-  February: monthLayers[1],
-  March: monthLayers[2],
-  April: monthLayers[3],
-  May: monthLayers[4],
-  June: monthLayers[5],
-  July: monthLayers[6],
-  //August: monthLayers[7],
-  September: monthLayers[7],
-  October: monthLayers[8],
-  November: monthLayers[9],
-  December: monthLayers[10],
+  //Attractions: touristLayer,
+  // January: monthLayers[0],
+  // February: monthLayers[1],
+  // March: monthLayers[2],
+  // April: monthLayers[3],
+  // May: monthLayers[4],
+  // June: monthLayers[5],
+  // July: monthLayers[6],
+  // //August: monthLayers[7],
+  // September: monthLayers[7],
+  // October: monthLayers[8],
+  // November: monthLayers[9],
+  // //December: monthLayers[10]
 };
-
-// Create a map object, and set the default layers.
 var myMap = L.map("map", {
   center: [37.09, -95.71],
   zoom: 4,
   layers: [street, cityLayer]
 });
 
+//Trying to add a scale to the map(it worked)
+L.control.scale({
+  metric: true,
+  imperial: false,
+  position: 'bottomright'
+}).addTo(myMap)
+
 // Pass our map layers into our layer control.
 // Add the layer control to the map.
 L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 
 
-
-});
 

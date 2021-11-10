@@ -1,36 +1,4 @@
-// Create a map object.
-var myMap = L.map("map", {
-    center: [37.09, -95.71],
-    zoom: 4
-  });
-  
- /* // Add a tile layer.
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(myMap);*/
-
- //Pulling in GoogleStreets -->
- googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
-    maxZoom: 20,
-    subdomains:['mt0','mt1','mt2','mt3']
-});
- 
-
-
-//Adding the Google street layer
-googleStreets.addTo(myMap)
-
-
-
- //Define a markerSize() function that will give each city a different radius based on its population.
-function markerSize(caseload) {
-  return Math.sqrt(caseload) * 50;
-}
-
-
-
-
-//Top 50 cites Includes Name, State, Location, County, and Total Covid Caseloads
+// An array of cities and their locations
 var cities =[
     {
       name: " Wailea",
@@ -383,101 +351,111 @@ var cities =[
       caseload: 34446
     }
   ];
+// Define variables for our tile layers.
+var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+})
 
-// Loop through the cities array, and create one marker for each city object.
-for (var i = 0; i < cities.length; i++) {
-    // Conditionals for country caseloads
-  var color = "";
-  if (cities[i].caseload > 600000) {
-    color = "#BD0026";
-  }
-  else if (cities[i].caseload > 400000) {
-    color = "#E31A1C";
-  }
-  else if (cities[i].caseload > 200000) {
-    color = "#FC4E2A";
-  }
-  else if (cities[i].caseload > 100000) {
-    color = "#FD8D3C";
-  }
-  else if (cities[i].caseload > 50000) {
-    color = "#FEB24C";
-  }
-  else if (cities[i].caseload > 10000) {
-    color = "#FED976";
-  }
-  else if (cities[i].caseload > 1500) {
-    color = "#FFEDA0";
-  }
-  else {
-    color = "#ccc";
-  }
+var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+//Pulling in GoogleStreets -->
+googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+  maxZoom: 20,
+  subdomains:['mt0','mt1','mt2','mt3']
+});
+
+// Only one base layer can be shown at a time.
+var baseMaps = {
+  Street: street,
+  Topography: topo
+};
+
+//////////////////////////////////////////////////
+
+   // An array that will store the created cityMarkers
+   var cityMarkers = [];
+
+   for (var i = 0; i < cities.length; i++) {
+      // loop through the cities array, create a new marker, and push it to the cityMarkers array
+      cityMarkers.push(
+        L.marker(cities[i].location).bindPopup("<h1>" + cities[i].name + "</h1>")
+      );
+    }
     
-    L.circle(cities[i].location, {
-      fillOpacity: 0.55,
-      color: color,
-      
-      // Setting our circle's radius to equal the output of our markerSize() function:
-      // This will make our marker's size proportionate to its caseload.
-      radius: markerSize(cities[i].caseload)
-    }).bindPopup(`<h1>${cities[i].name}</h1> <hr> <h3>Caseload: ${cities[i].caseload.toLocaleString()}</h3>`).addTo(myMap);
-  }
+    // Add all the cityMarkers to a new layer group.
+    // Now, we can handle them as one group instead of referencing each one individually.
+   var cityLayer = L.layerGroup(cityMarkers);
 
- 
-  var cityMarkers = [];
+// load data for attractions 
 
-  for (var i = 0; i < cities.length; i++) {
-    // loop through the cities array, create a new marker, and push it to the cityMarkers array
-    cityMarkers.push(
-      L.marker(cities[i].location).bindPopup("<h1>" + cities[i].name + "</h1>").addTo(myMap)
-    );
-  }
- 
+d3.json("/api/attractions-data").then(function(response) {
+  //load data into stations variable
+  var attractions = []
+  for  (var i = 0; i < response.length; i++) {
+      attractions.push(response[i]);
+  };
+  console.log(attractions);
 
-  //Trying to add a scale to the map(it)
-L.control.scale({
+  //create custom inon
+  var icon = L.Icon.extend({
+    options: {
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
+        shadowUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
+        iconSize:     [20,20],
+        shadowSize:   [10,10],
+        iconAnchor:   [15,15],
+        shadowAnchor: [15,15],
+        popupAnchor:  [-5, -25],
+    }
+  });
+
+  var attractionsIcon = new icon ({iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png"})
+
+ // An array that will store the created cityMarkers
+  var touristMarkers = [];
+
+  for (var i = 0; i < attractions.length; i++) {
+  // loop through the cities array, create a new marker, and push it to the cityMarkers array
+   touristMarkers.push(
+    L.marker([attractions[i].Lat,attractions[i].Lon], {icon: attractionsIcon}).bindPopup( attractions[i].Name));
+  };
+  var touristLayer = L.layerGroup(touristMarkers);
+
+//Add all the touristMarkers to a new layer group.
+//Now, we can handle them as one group instead of referencing each one individually.
+    var overlayMaps = {
+    Cities: cityLayer,
+    Attractions: touristLayer,
+    // January: monthLayers[0],
+    // February: monthLayers[1],
+    // March: monthLayers[2],
+    // April: monthLayers[3],
+    // May: monthLayers[4],
+    // June: monthLayers[5],
+    // July: monthLayers[6],
+    // //August: monthLayers[7],
+    // September: monthLayers[7],
+    // October: monthLayers[8],
+    // November: monthLayers[9],
+    // //December: monthLayers[10]
+  };
+  var myMap = L.map("map", {
+    center: [37.09, -95.71],
+    zoom: 4,
+    layers: [street, cityLayer]
+  });
+  
+  //Trying to add a scale to the map(it worked)
+  L.control.scale({
     metric: true,
     imperial: false,
     position: 'bottomright'
-}).addTo(myMap)  
+  }).addTo(myMap)
+  
+  // Pass our map layers into our layer control.
+  // Add the layer control to the map.
+  L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+});
 
- // Define layer names
-const layers = [
-    '0-1500',
-    '1500-10000',
-    '10000-50000',
-    '50000-100000',
-    '100000-200000',
-    '200000-400000',
-    '400000-600000',
-    '600000+'
-    ];
-    const colors = [
-    '#FFEDA0',
-    '#FED976',
-    '#FEB24C',
-    '#FD8D3C',
-    '#FC4E2A',
-    '#E31A1C',
-    '#BD0026',
-    '#800026'
-    ];
-     
-    // Create legend
-    // const legend = document.getElementById('legend');
-     
-    // layers.forEach((layer, i) => {
-    // const color = colors[i];
-    // const item = document.createElement('div');
-    // const key = document.createElement('span');
-    // key.className = 'legend-key';
-    // key.style.backgroundColor = color;
-     
-    // const value = document.createElement('span');
-    // value.innerHTML = `${layer}`;
-    //  item.appendChild(key);
-    //  item.appendChild(value);
-    //  legend.appendChild(item);
-    //  })
- 
-    //  L.control.legend.addTo(myMap)
