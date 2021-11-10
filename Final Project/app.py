@@ -65,5 +65,17 @@ def get_climate_data():
 
     return (json_util.dumps(climate_array ))
 
+@app.route("/climate")
+def climate_map():
+    return render_template("climate.html")
+
+@app.route("/attractions")
+def attractions_map():
+    return render_template("attractions.html")
+
+@app.route("/covid")
+def covid_map():
+    return render_template("covid.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -9210,7 +9210,7 @@ var baseMaps = {
 // Overlays that can be toggled on or off
 var overlayMaps = {
     Cities: cityLayer,
-  attractions: touristLayer
+  Attractions: touristLayer
 };
 
 // Create a map object, and set the default layers.
