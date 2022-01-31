@@ -4,13 +4,13 @@ var myMap = L.map("map", {
     zoom: 4
   });
   
- /* // Add a tile layer.
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  //Add a tile layer.
+  var street =L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(myMap);*/
+  }).addTo(myMap);
 
  //Pulling in GoogleStreets -->
- googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+/* googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
     maxZoom: 20,
     subdomains:['mt0','mt1','mt2','mt3']
 });
@@ -18,7 +18,7 @@ var myMap = L.map("map", {
 
 
 //Adding the Google street layer
-googleStreets.addTo(myMap)
+googleStreets.addTo(myMap)*/
 
 
 
@@ -384,6 +384,7 @@ var cities =[
     }
   ];
 
+var choromarks = []
 // Loop through the cities array, and create one marker for each city object.
 for (var i = 0; i < cities.length; i++) {
     // Conditionals for country caseloads
@@ -423,7 +424,10 @@ for (var i = 0; i < cities.length; i++) {
     }).bindPopup(`<h1>${cities[i].name}</h1> <hr> <h3>Caseload: ${cities[i].caseload.toLocaleString()}</h3>`).addTo(myMap);
   }
 
- 
+    
+
+  
+
 
 
   //Trying to add a scale to the map(it)
@@ -473,3 +477,5 @@ const layers = [
      })
  
      L.control.legend.addTo(myMap)
+
+
