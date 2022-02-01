@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Citi Bike</title>
+
+  <!-- D3 library -->
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+  <!-- Leaflet JavaScript code -->
+  <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+  integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+  crossorigin=""></script>
+
+   <!-- Leaflet heatmap plugin-->
+   <script src="static/js/heatmap.js"></script>
+   <script type="text/javascript" src="static/js/leaflet-heatmap.js"></script> 
+
+  <!-- polyfill.io is the library for using newer JavaScript features (such as Object.assign) in older browers. -->
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+  integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+  crossorigin=""/>
+
+  <style> 
+  #map
+  {
+      width: 100px;
+      height:100px;
+      min-height: 100%;
+      min-width: 100%;
+      display: block;
+  }
+  
+  html, body
+  {
+      height: 100%;
+  }
+  
+  #map-holder{
+      height: 100%;
+  }
+  
+  .fill
+  {
+      min-height: 100%;
+      height: 100%;
+      width: 100%;
+      max-width: 100%;
+  }
+  
+  .container{
+      max-width:60em;
+      padding: 0.2em;
+  }
+  </style>
+</head>
+
+<body>
+
+  <!-- The div that holds our map -->
+
+  <div id="map-holder">
+    <div class="container fill">
+      <div id="map"></div>
+    </div>
+  </div>
+  <!-- Our JavaScript file -->
+  <script type="text/javascript" src="static/js/maplogic_markers_dest_and_touristattractions.js"></script>
+
+</body>
+
+</html>
